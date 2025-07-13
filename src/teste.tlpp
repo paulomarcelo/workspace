@@ -1,0 +1,19 @@
+#include 'totvs.ch'
+
+/*/{Protheus.doc} U_TESTE
+Funcao exemplo para utilizacao na descricao de testes de funcao.
+Sera acionada a partir do item de menu do programa de cadastro de teste.
+@type function
+@version 1.0
+@author paulo
+@since 16/03/2025
+/*/
+Function U_TESTE
+
+    Local x
+
+    for x := 1 to 10
+        
+    next
+    
+Return

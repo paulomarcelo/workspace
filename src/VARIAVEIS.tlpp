@@ -1,0 +1,31 @@
+#include 'totvs.ch'
+
+Function U_VARIAVEISTLPP as logical
+
+    Local xVarTipoVariant as variant // O CONTEUDO PODE MUDAR AO LONGO DO PROGRAMA
+    Local nVarTipoInteiro as integer // INTEIROS
+    Local nVarTipoNumeric as numeric // INTEIROS E PONTOS FLUTUANTES
+    Local nVarTipoDouble as double // PONTO FLUTUANTE
+    Local nVarTipoDecimal as decimal // SERVE PARA FIXAR QUANTAS CASAS DECIMAIS UM NÚMERO VAI TER
+    Local lVarTipoLogico as logical // PARA CONTEUDOS DO TIPO LOGICO
+    Local cVarTipoTexto as character // CONTEUDOS DO TIPO TEXTO
+    Local dVarTipoData as date // DATA
+    Local bVarTipoBloco as codeblock // BLOCO DE CODIGO
+    Local oVarTipoObject as object // OBJETO
+    Local oVarTipoJson as json // JSON
+    Local aVarTipoArray as array // ARRAY
+
+    xVarTipoVariant := nil
+    nVarTipoInteiro := 1
+    nVarTipoNumeric := 1
+    nVarTipoDouble := 1.5
+    nVarTipoDecimal := DEC_CREATE(7233.759119, 21, 20)
+    lVarTipoLogico := .T.
+    cVarTipoTexto := ''
+    dVarTipoData := date()
+    bVarTipoBloco := {|| alert('ok')}
+    oVarTipoObject := tFont():new()
+    oVarTipoJson := fwJsonObject():new()
+    aVarTipoArray := array(0)
+
+Return .T.
