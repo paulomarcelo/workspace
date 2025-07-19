@@ -84,6 +84,7 @@ Static Function modeldef
 
     aTrigger := fwStruTrigger('Z50_TIPO','Z50_CODIGO','U_GCTT001()',.F.,Nil,Nil,Nil,Nil)
     oStruct:addTrigger(aTrigger[1],aTrigger[2],aTrigger[3],aTrigger[4])
+    oStruct:setProperty('Z50_TIPO',MODEL_FIELD_WHEN,{|| INCLUI})
 
     oModel:addFields('Z50MASTER',,oStruct)
     oModel:setDescription('Tipos de contratos')
