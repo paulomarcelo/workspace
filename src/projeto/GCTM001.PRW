@@ -78,9 +78,13 @@ Static Function modeldef
     Local oModel
     Local oStruct
     Local aTrigger
+    Local bModelPre := {|x| fnModPre(x)}
+    Local bModelPos := {|x| fnModPos(x)} // equivale a validacao tudoOK
+    Local bCommit := {|x| fnCommit(x)} // retorna apenas para informar: .T. para informar se gravou e .F. se nao gravou no banco de dados
+    Local bCancel := {|x| fnCancel(x)} // funcao que sera executado quando o usuario clicar no botal cancelar da tela se retornar .F. nao vai permitir cancelar 
 
     oStruct := fwFormStruct(1,'Z50') // primeiro parametro 1 quando a estrutura é para modeldef
-    oModel := mpFormModel():new('MODEL_GCTM001')
+    oModel := mpFormModel():new('MODEL_GCTM001',bModelPre,bModelPos,bCommit,bCancel)
 
     aTrigger := fwStruTrigger('Z50_TIPO','Z50_CODIGO','U_GCTT001()',.F.,Nil,Nil,Nil,Nil)
     oStruct:addTrigger(aTrigger[1],aTrigger[2],aTrigger[3],aTrigger[4])
@@ -92,6 +96,45 @@ Static Function modeldef
 
 Return oModel
 
+/*/{Protheus.doc} fnModPre
+    Funcao de pre validacao do modelo de dados, executada sem que tentar editar um campo
+    @type  Static Function
+/*/
+Static Function fnModPre(oModel)
+
+    Local lValid := .T.
+
+Return lValid
+
+/*/{Protheus.doc} fnModPos
+    Funcao de validacao final do modelo de dados, tudook, vai ser executada quando clicar no botao confirmar
+    @type  Static Function
+/*/
+Static Function fnModPos(oModel)
+
+    Local lValid := .T.
+    
+Return lValid
+
+/*/{Protheus.doc} fnCommit
+    Funcao executada para gravacao dos dados
+    @type  Static Function
+/*/
+Static Function fnCommit(oModel)
+
+    Local lCommit := fwFormCommit(oModel)
+
+Return lCommit
+
+/*/{Protheus.doc} fnCancel
+    Funcao executada para validacao do cancelamento dos dados
+    @type  Static Function
+/*/
+Static Function fnCancel(oModel)
+
+    Local lCancel := fwFormCancel(oModel)
+
+Return lCancel
 
 /*/{Protheus.doc} U_GCTT001
     Funcao para execucao do gatilho de codigo
