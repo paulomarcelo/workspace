@@ -123,6 +123,31 @@ Return lValid
 Static Function fnModPos(oModel)
 
     Local lValid := .T.
+    Local cAliasSQL := ''
+    Local lExist := .F.
+    Local nOperation := oModel:getOperation()
+
+    // Na operacao de exclusao não permitir excluir um tipo ja vinculado a contrato
+    If nOperation == 5
+
+        cAliasSQL := getNextAlias()
+
+            BeginSql Alias cAliasSQL
+                SELECT
+                    TOP 1 *
+                FROM %table:Z51% Z51
+                WHERE Z51.%notdel% 
+                AND Z51_FILIAL = %exp:xFilial('Z51')%       
+                AND Z51_TIPO = %exp:Z50->Z50_CODIGO%
+            EndSql
+
+        (cAliasSQL)->(dbEval({|| lExist := .T.}),dbCloseArea())
+
+        IF lExist
+            oModel:setErrorMessage(,,,,'Registro ja utilizado','Esse registro nao pode ser excluido pois ja foi utilizado!')
+            return .F.
+        EndIF
+    EndIF
     
 Return lValid
 
