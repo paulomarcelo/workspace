@@ -157,7 +157,11 @@ Return lValid
 /*/
 Static Function fnCommit(oModel)
 
-    Local lCommit := fwFormCommit(oModel)
+    Local lCommit := fwFormCommit(oModel,/*bBefore*/,/*bAfter*/,/*bAfterTTS*/,/*bInTTS*/,/*bBeforeTTS*/,/*bIntegEAI*/)
+
+    IF .not. lCommit
+        oModel:setErrorMessage(,,,,'Gravação não efetuada','Ocorreu um erro na gravação dos dados')
+    EndIF 
 
 Return lCommit
 
