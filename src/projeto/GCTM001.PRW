@@ -82,6 +82,9 @@ Static Function modeldef
     Local bModelPos := {|x| fnModPos(x)} // equivale a validacao tudoOK
     Local bCommit := {|x| fnCommit(x)} // retorna apenas para informar: .T. para informar se gravou e .F. se nao gravou no banco de dados
     Local bCancel := {|x| fnCancel(x)} // funcao que sera executado quando o usuario clicar no botal cancelar da tela se retornar .F. nao vai permitir cancelar 
+    Local bFieldPre := {|oSubModel,cIdAction,cIdField,xValue| fnFieldPre(oSubModel,cIdAction,cIdField,xValue)}
+    Local bFieldPos := {|oSubModel|                           fnFieldPos(oSubModel)}
+    Local bFieldLoad:= {|oSubModel,lCopy|                     fnFieldLoad(oSubModel,lCopy)}
 
     oStruct := fwFormStruct(1,'Z50') // primeiro parametro 1 quando a estrutura é para modeldef
     oModel := mpFormModel():new('MODEL_GCTM001',bModelPre,bModelPos,bCommit,bCancel)
@@ -90,7 +93,7 @@ Static Function modeldef
     oStruct:addTrigger(aTrigger[1],aTrigger[2],aTrigger[3],aTrigger[4])
     oStruct:setProperty('Z50_TIPO',MODEL_FIELD_WHEN,{|| INCLUI})
 
-    oModel:addFields('Z50MASTER',,oStruct)
+    oModel:addFields('Z50MASTER',,oStruct,bFieldPre,bFieldPos,bFieldLoad)
     oModel:setDescription('Tipos de contratos')
     oModel:setPrimaryKey({'Z50_FILIAL','Z50_CODIGO'}) // X2_UNICO da tabela
 
@@ -174,6 +177,34 @@ Static Function fnCancel(oModel)
     Local lCancel := fwFormCancel(oModel)
 
 Return lCancel
+
+/*/{Protheus.doc} fnFieldPre
+    Pre validacao do submodelo
+    @type  Static Function
+    /*/
+Static Function fnFieldPre(oSubModel,cIdAction,cIdField,xValue)
+
+    Local lValid := .T.
+
+Return lValid
+
+/*/{Protheus.doc} fnFieldPos
+    Validacao de tudook do submodelo
+    @type  Static Function
+    /*/
+Static Function fnFieldPos(oSubModel)
+
+    Local lValid := .T.
+    
+Return lValid
+
+/*/{Protheus.doc} fnFieldLoad
+    Funcao para carregamento dos dados
+    @type  Static Function
+    /*/
+Static Function fnFieldLoad(oSubModel,lCopy)
+    
+Return formLoadField(oSubModel,lCopy)
 
 /*/{Protheus.doc} U_GCTT001
     Funcao para execucao do gatilho de codigo
