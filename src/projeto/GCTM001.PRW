@@ -77,12 +77,46 @@ Static Function modeldef
 
     Local oModel
     Local oStruct
+    Local aTrigger
 
     oStruct := fwFormStruct(1,'Z50') // primeiro parametro 1 quando a estrutura é para modeldef
     oModel := mpFormModel():new('MODEL_GCTM001')
+
+    aTrigger := fwStruTrigger('Z50_TIPO','Z50_CODIGO','U_GCTT001()',.F.,Nil,Nil,Nil,Nil)
+    oStruct:addTrigger(aTrigger[1],aTrigger[2],aTrigger[3],aTrigger[4])
 
     oModel:addFields('Z50MASTER',,oStruct)
     oModel:setDescription('Tipos de contratos')
     oModel:setPrimaryKey({'Z50_FILIAL','Z50_CODIGO'}) // X2_UNICO da tabela
 
 Return oModel
+
+
+/*/{Protheus.doc} U_GCTT001
+    Funcao para execucao do gatilho de codigo
+    @type  Function
+    /*/
+Function U_GCTT001
+    
+    Local cNovoCod := ''
+    Local cAliasSQL := ''
+
+    cAliasSQL := getNextAlias()
+
+    BeginSQL alias cAliasSQL
+        SELECT COALESCE(MAX(Z50_CODIGO),'00') Z50_CODIGO
+        FROM %table:Z50% Z50
+        WHERE Z50.%notdel%
+        AND Z50_FILIAL = %exp:xFilial('Z50')%
+        AND Z50_TIPO = %exp:M->Z50_TIPO%
+    EndSQL
+
+    (cAliasSQL)->(dbEval({|| cNovoCod := alltrim(Z50_CODIGO)}),dbCloseArea())
+
+    If cNovoCod == '00'
+        cNovoCod := M->Z50_TIPO + '01'
+    Else
+        cNovoCod := soma1(cNovoCod)
+    EndIf
+
+Return cNovoCod
