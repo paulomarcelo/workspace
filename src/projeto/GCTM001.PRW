@@ -100,6 +100,15 @@ Function U_GCTT001
     
     Local cNovoCod := ''
     Local cAliasSQL := ''
+    Local oModel := fwModelActive()
+    Local nOperation := 0
+
+    nOperation := oModel:getOperation()
+
+    If .not. (nOperation == 3 .or. nOperation == 9)
+       cNovoCod := oModel:getModel('Z50MASTER'):getValue('Z50_CODIGO')
+       return cNovoCod
+    Endif
 
     cAliasSQL := getNextAlias()
 
