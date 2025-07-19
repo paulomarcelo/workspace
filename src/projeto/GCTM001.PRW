@@ -103,6 +103,16 @@ Return oModel
 Static Function fnModPre(oModel)
 
     Local lValid := .T.
+    Local nOperation := oModel:getOperation()
+    Local cCampo := strtran(readvar(),"M->","") // removendo da string o M-> de memoria
+
+    // No modo de alteracao não pode alterar o campo Z50_DESCRI
+    If nOperation == 4
+        If cCampo == "Z50_DESCRI"
+            oModel:setErrorMessage(,,,,'ERRO DE VALIDACAO','ESSE CAMPO NAO PODE SER EDITADO')
+            lValid := .F.
+        EndIf
+    EndIf
 
 Return lValid
 
