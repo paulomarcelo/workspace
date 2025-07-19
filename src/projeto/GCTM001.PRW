@@ -2,7 +2,7 @@
 #include 'fwmvcdef.ch'
 
 /*/{Protheus.doc} U_GCTM001
-    Exemplo de funcao MVC para construcao de cadastro no formato modelo 1
+    Exemplo de funcao MVC para construcao de cadastro no formato modelo 1.
     @type  Function
     @see https://centraldeatendimento.totvs.com/hc/pt-br/articles/360029127091-Cross-Segmento-TOTVS-Backoffice-Linha-Protheus-ADVPL-Op%C3%A7%C3%B5es-de-cores-na-legenda-da-Classe-FWMBROWSE (Cores de Legenda)
     @see https://tdn.totvs.com.br/display/framework/Classe_Acervo
