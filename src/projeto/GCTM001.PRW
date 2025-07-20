@@ -89,7 +89,7 @@ Static Function modeldef
     oStruct := fwFormStruct(1,'Z50') // primeiro parametro 1 quando a estrutura é para modeldef
     oModel := mpFormModel():new('MODEL_GCTM001',bModelPre,bModelPos,bCommit,bCancel)
 
-    aTrigger := fwStruTrigger('Z50_TIPO','Z50_CODIGO','U_GCTT001()',.F.,Nil,Nil,Nil,Nil)
+    aTrigger := fwStruTrigger('Z50_TIPO','Z50_CODIGO','U_GCTT001()',.F.,Nil,Nil,Nil,"01")
     oStruct:addTrigger(aTrigger[1],aTrigger[2],aTrigger[3],aTrigger[4])
     oStruct:setProperty('Z50_TIPO',MODEL_FIELD_WHEN,{|| INCLUI})
 
