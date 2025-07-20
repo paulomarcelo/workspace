@@ -184,7 +184,17 @@ Return lCancel
     /*/
 Static Function fnFieldPre(oSubModel,cIdAction,cIdField,xValue)
 
-    Local lValid := .T.
+    Local oModel     := fwModelActive()
+    Local lValid     := .T.
+
+    IF cIdAction == 'SETVALUE'
+        IF cIdField == 'Z50_DESCRI'
+            IF empty(xValue)
+                oModel:setErrorMessage(,,,,'NAOVAZIO','O conteudo nao pode ser vazio')
+                lValid := .F.
+            EndIF
+        EndIF
+    EndIF
 
 Return lValid
 
