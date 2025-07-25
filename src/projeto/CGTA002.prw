@@ -42,7 +42,7 @@ Function U_GCTA002M(cAlias,nReg,nOpc)
 	Local aInfo	   := {aAdvSize[1],aAdvSize[2],aAdvSize[3],aAdvSize[4],3,3}
 	Local aObj	   := {{100,120,.T.,.F.},{100,100,.T.,.T.},{100,010,.T.,.F.}}
 	Local aPObj	   := msObjSize(aInfo,aObj)
-	Local nStyle   := GD_INSERT+GD_UPDATE+GD_DELETE
+	Local nStyle   := GD_INSERT+GD_UPDATE+GD_DELETE // habilita as acoes de insert, update e delete no componente de itens
 	Local nSalvar  := 0
 	Local bSalvar  := {|| if(obrigatorio(aGets,aTela),(nSalvar := 1, oDlg:end()),nil)}
 	Local bCancelar:= {|| (nSalvar := 0, oDlg:end())}
@@ -55,10 +55,10 @@ Function U_GCTA002M(cAlias,nReg,nOpc)
 	Private aTela  := array(0)
 
 	//-- Tela de dialog principal
-	oDlg 		:= tDialog():new(0 				,; 	//-- Cordenada inicial, Linha inicial (Pixels)
-								 0 				,;	//-- Cordenada inicial, Coluna inicial
-								 aAdvSize[6] 	,;  //-- Cordenada final, Coluna final
-								 aAdvSize[5] 	,;	//-- Cordenada final, Linha fina
+	oDlg 		:= tDialog():new(0 				,; 	//-- Coordenada inicial, Linha inicial (Pixels)
+								 0 				,;	//-- Coordenada inicial, Coluna inicial
+								 aAdvSize[6] 	,;  //-- Coordenada final, Coluna final
+								 aAdvSize[5] 	,;	//-- Coordenada final, Linha fina
 								 cTitulo		,;	//-- Titulo da janela
 								 Nil			,; 	//-- Fixo
 								 Nil			,;  //-- Fixo
@@ -68,7 +68,7 @@ Function U_GCTA002M(cAlias,nReg,nOpc)
 								 CLR_WHITE		,;  //-- Cor de fundo da tela
 								 Nil			,;  //-- Fixo
 								 Nil			,;  //-- Fixo
-								 .T.			)   //-- Indica que as cordenadas serao em pixel 
+								 .T.			)   //-- Indica que as Coordenadas serao em pixel 
 
 	//-- Area do Cabecalho
 	regToMemory(cAlias,if(nOpc == 3,.T.,.F.),.T.)
@@ -78,10 +78,10 @@ Function U_GCTA002M(cAlias,nReg,nOpc)
 	enchoicebar(oDlg,bSalvar,bCancelar,,aButtons)
 
 	//-- Area de Itens
-	oGet := msNewGetDados():new(aPObj[2,1] 		,; //-- Cordenada inicial, Linha inicial
-								aPObj[2,2] 		,; //-- Cordenada inicial, Coluna inicial
-								aPObj[2,3] 		,; //-- Cordenada final  , Coluna final
-								aPObj[2,4] 		,; //-- Cordenada final  , Linha final
+	oGet := msNewGetDados():new(aPObj[2,1] 		,; //-- Coordenada inicial, Linha inicial
+								aPObj[2,2] 		,; //-- Coordenada inicial, Coluna inicial
+								aPObj[2,3] 		,; //-- Coordenada final  , Coluna final
+								aPObj[2,4] 		,; //-- Coordenada final  , Linha final
 								nStyle	   		,; //-- Opcoes que podem ser executadas
 								'U_GCTA002V(1)'	,; //-- Validacao de mudanca de linha
 								'U_GCTA002V(2)'	,; //-- Validacao final
