@@ -73,7 +73,8 @@ Function U_GCTA002M(cAlias,nReg,nOpc)
 	//-- Area do Cabecalho
 	regToMemory(cAlias,if(nOpc == 3,.T.,.F.),.T.)
 	M->Z51_NUMERO := if(nOpc == 3, getSxeNum('Z51','Z51_NUMERO'),Z51->Z51_NUMERO)
-	msmGet():new(cAlias,nReg,nOpc,,,,,aPObj[1])
+	msmGet():new(cAlias,nReg,nOpc,,,,,aPObj[1])	
+	// enchoice(cAlias,nReg,nOpc,,,,,aPObj[1]) // a funcao enchoice desenha o cabecalho da mesma forma que a msmGet logo nos programas podem ser encontradas das duas formas                                                                                                                                                                                 
 	enchoicebar(oDlg,bSalvar,bCancelar,,aButtons)
 
 	//-- Area de Itens
