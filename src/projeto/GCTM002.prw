@@ -68,7 +68,7 @@ Static Function viewdef
     Local oStructZ52
 
     oStructZ51 := fwFormStruct(2,'Z51')    
-    oStructZ52 := fwFormStruct(2,'Z52')
+    oStructZ52 := fwFormStruct(2,'Z52',{|cCampo| .not. alltrim(cCampo) $ 'Z52_NUMERO'})
     oModel := fwLoadModel('GCTM002')
     oView := fwFormView():new()   
 
@@ -79,7 +79,7 @@ Static Function viewdef
     oView:createHorizontalBox('BOXZ51',50)
     oView:createHorizontalBox('BOXZ52',50)
     oView:setOwnerView('Z51MASTER','BOXZ51')
-    oView:setOwnerView('Z52MASTER','BOXZ52')
+    oView:setOwnerView('Z52DETAIL','BOXZ52')
 
 Return oView
 
