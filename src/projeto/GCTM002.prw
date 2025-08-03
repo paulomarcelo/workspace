@@ -90,5 +90,50 @@ Return oView
 Static Function modeldef
 
     Local oModel
+    Local oStructZ51
+    Local oStructZ52
+    Local bModelPre := {|oModel| .T.}
+    Local bModelPos := {|oModel| .T.}
+    Local bCommit := {|oModel| fwFormCommit(oModel)}
+    Local bCancel := {|oModel| fwFormCancel(oModel)}
+    Local bLinePre := {|oGridModel,nLine,cAction,cField,xValue,xCurrentValue| vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,1)}
+    Local bGridPre := {|oGridModel,nLine,cAction,cField,xValue,xCurrentValue| vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,2)}
+    Local bLinePos := {|oGridModel,nLine| vGridPos(oGridModel,nLine,1)}
+    Local bGridPos := {|oGridModel,nLine| vGridPos(oGridModel,nLine,2)}
+    Local bGridload := {|oGridModel,lCopy| vGridLoad(oGridModel,lCopy )}
+
+    oStructZ51 := fwFormStruct(1,'Z51')
+    oStructZ52 := fwFormStruct(1,'Z52')
+
+    oModel := mpFormModel():new('MODEL_CGTM002',bModelPre,bModelPos,bCommit,bCancel)
+    oModel:setDescription('Contratos')
+    oModel:addFields('Z51MASTER',,oStructZ51)
+    oModel:setPrimaryKey({'Z51_FILIAL','Z51_NUMERO'})
+    oModel:addGrid('Z52DETAIL','Z51MASTER',oStructZ52,bLinePre,bLinePos,bGridPre,bGridPos,bGridLoad)
+    oModel:getModel('Z52DETAIL'):setUniqueLine({'Z52_ITEM'})
+    oModel:setOptional('Z52DETAIL',.T.)
+    oModel:setRelation('Z52DETAIL',{{'Z52_FILIAL','xFilial("Z52")'},{"Z52_NUMERO","Z51_NUMERO"}},Z52->(indexKey(1)))
 
 Return oModel
+
+Static Function vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,nOpc)
+
+    Local lValid
+
+return lValid
+
+/*/{Protheus.doc} vGridPos
+    Pos validacao do submodelo grid
+    @type  Static Function
+    /*/
+Static Function vGridPos(oGridModel,nLine,nOpc)
+
+    Local lValid := .T.
+    
+Return lValid
+
+Static Function vGridLoad(oGridModel,lCopy)
+
+    Local aRetorno := formLoadGrid(oGridModel,lCopy)
+
+return aRetorno
