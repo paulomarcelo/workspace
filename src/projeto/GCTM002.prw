@@ -95,7 +95,7 @@ Static Function modeldef
     Local bModelPre := {|oModel| .T.}
     Local bModelPos := {|oModel| .T.}
     Local bCommit := {|oModel| fwFormCommit(oModel)}
-    Local bCancel := {|oModel| fwFormCancel(oModel)}
+    Local bCancel := {|oModel| fCancel(oModel)}
     Local bLinePre := {|oGridModel,nLine,cAction,cField,xValue,xCurrentValue| vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,1)}
     Local bGridPre := {|oGridModel,nLine,cAction,cField,xValue,xCurrentValue| vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,2)}
     Local bLinePos := {|oGridModel,nLine| vGridPos(oGridModel,nLine,1)}
@@ -104,6 +104,30 @@ Static Function modeldef
 
     oStructZ51 := fwFormStruct(1,'Z51')
     oStructZ52 := fwFormStruct(1,'Z52')
+
+    /*
+    Z51_TIPO
+    Z51_NUMERO
+    Z51_CLIENT
+    Z51_LOJA
+    Z51_NOMCLI
+    Z51_VALOR
+    Z51_QTDMED
+    */
+
+    bModelWhen = {|| oModel:getOperation() == 3 .or. oModel:getOperation() == 9}
+    bModelInit := {|| getSxeNum("Z51","Z51_NUMERO") }
+
+    // Preenchimento deste campo do número de forma automática
+    oStructZ51:setProperty('Z51_NUMERO' ,MODEL_FIELD_INIT,bModelInit)
+    // Só é permitido editar os campos abaixo na operação de inclusão ou cópia
+    oStructZ51:setProperty('Z51_TIPO',MODEL_FIELD_WHEN,bModelWhen)
+    oStructZ51:setProperty('Z51_NUMERO',MODEL_FIELD_WHEN,bModelWhen)
+    oStructZ51:setProperty('Z51_CLIENT',MODEL_FIELD_WHEN,bModelWhen)
+    oStructZ51:setProperty('Z51_LOJA',MODEL_FIELD_WHEN,bModelWhen)
+    oStructZ51:setProperty('Z51_NOMCLI',MODEL_FIELD_WHEN,bModelWhen)
+    oStructZ51:setProperty('Z51_VALOR',MODEL_FIELD_WHEN,bModelWhen)
+    oStructZ51:setProperty('Z51_QTDMED',MODEL_FIELD_WHEN,bModelWhen)
 
     oModel := mpFormModel():new('MODEL_CGTM002',bModelPre,bModelPos,bCommit,bCancel)
     oModel:setDescription('Contratos')
@@ -116,6 +140,19 @@ Static Function modeldef
 
 Return oModel
 
+Static Function fCancel(oModel)
+
+    Local lCancel := fwFormCancel(oModel)
+
+    IF lCancel
+
+        IF __lSX8
+            rollbackSX8()
+        EndIF
+
+    EndIF
+
+Return lCancel
 Static Function vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,nOpc)
 
     Local lValid
