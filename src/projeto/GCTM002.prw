@@ -118,6 +118,7 @@ Static Function modeldef
     bModelWhen := {|| oModel:getOperation() == 3 .or. oModel:getOperation() == 9}
     bWhenEmiss := {|| vWhenEmis(oModel)}
     bModelInit := {|| getSxeNum("Z51","Z51_NUMERO") }
+    bValid     := {|| vValid()}
 
     // Preenchimento deste campo do número de forma automática
     oStructZ51:setProperty('Z51_NUMERO' ,MODEL_FIELD_INIT,bModelInit)
@@ -130,6 +131,7 @@ Static Function modeldef
     oStructZ51:setProperty('Z51_VALOR',MODEL_FIELD_WHEN,bModelWhen)
     oStructZ51:setProperty('Z51_QTDMED',MODEL_FIELD_WHEN,bModelWhen)
     oStructZ51:setProperty('Z51_EMISSA' ,MODEL_FIELD_WHEN,bWhenEmiss)
+    oStructZ51:setProperty('*'          ,MODEL_FIELD_VALID,bValid   )
 
     oModel := mpFormModel():new('MODEL_CGTM002',bModelPre,bModelPos,bCommit,bCancel)
     oModel:setDescription('Contratos')
@@ -141,6 +143,59 @@ Static Function modeldef
     oModel:setRelation('Z52DETAIL',{{'Z52_FILIAL','xFilial("Z52")'},{"Z52_NUMERO","Z51_NUMERO"}},Z52->(indexKey(1)))
 
 Return oModel
+
+Static Function vValid
+
+    Local lValid := .T.
+    Local cCampo := strtran(readvar(),"M->","")
+    Local xValue := Nil
+    Local oModel := fwModelActive()
+
+    DO CASE
+
+        CASE cCampo == 'Z51_TIPO'
+            
+            xValue    := oModel:getModel('Z51MASTER'):getValue('Z51_TIPO')
+            cAliasSQL := mpSysOpenQuery("SELECT * FROM " + retSqlName("Z50") + " WHERE D_E_L_E_T_ = ' ' AND Z50_CODIGO = '" + xValue + "' ")
+            lValid    := .F.
+            (cAliasSQL)->(dbEval({|| lValid := .T.}),dbCloseArea())
+
+        CASE cCampo == 'Z51_CLIENT' .or. cCampo == 'Z51_LOJA'
+
+            cTpInte         := oModel:getModel('Z51MASTER'):getValue('Z51_TPINTE')
+            cCodigo         := oModel:getModel('Z51MASTER'):getValue('Z51_CLIENT')
+            cLoja           := oModel:getModel('Z51MASTER'):getValue('Z51_LOJA'  ) 
+            cChaveBusca     :=  iif(empty(cCodigo),space(tamSX3('Z51_CLIENT')[1]),cCodigo) +;
+                                iif(empty(cLoja),'',cLoja)
+
+            IF cTpInte == 'C'
+                SA2->(dbSetOrder(1),dbSeek(xFilial(alias())+cChaveBusca))
+                IF SA2->(.not. Found())
+                    lValid := .F.
+                Else
+                    oModel:getModel('Z51MASTER'):setValue('Z51_NOMCLI',left(SA2->A2_NOME,tamSX3('Z51_NOMCLI')[1]))    
+                EndIF   
+            Else
+                SA1->(dbSetOrder(1),dbSeek(xFilial(alias())+cChaveBusca))
+                IF SA1->(.not. Found())
+                    lValid := .F.
+                Else
+                    oModel:getModel('Z51MASTER'):setValue('Z51_NOMCLI',left(SA1->A1_NOME,tamSX3('Z51_NOMCLI')[1]))    
+                EndIF  
+            EndIF
+
+        CASE cCampo == 'Z52_QTD' .or. cCampo == 'Z52_VLRUNI' //-- Atualizar os campos de valor e saldo do valor   
+
+            nQtd    := oModel:getModel('Z52DETAIL'):getValue('Z52_QTD'   )
+            nVlrUni := oModel:getModel('Z52DETAIL'):getValue('Z52_VLRUNI')  
+            nValor  := round(nQtd * nVlrUni,tamSX3('Z52_VALOR')[2]       ) 
+
+            fwFldPut('Z52_VALOR',nValor)
+            fwFldPut('Z52_SALDO',nValor)
+
+    END CASE
+
+return lValid
 
 Static Function vWhenEmis(oModel)
 
