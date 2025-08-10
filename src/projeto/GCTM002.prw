@@ -115,7 +115,8 @@ Static Function modeldef
     Z51_QTDMED
     */
 
-    bModelWhen = {|| oModel:getOperation() == 3 .or. oModel:getOperation() == 9}
+    bModelWhen := {|| oModel:getOperation() == 3 .or. oModel:getOperation() == 9}
+    bWhenEmiss := {|| vWhenEmis(oModel)}
     bModelInit := {|| getSxeNum("Z51","Z51_NUMERO") }
 
     // Preenchimento deste campo do número de forma automática
@@ -128,6 +129,7 @@ Static Function modeldef
     oStructZ51:setProperty('Z51_NOMCLI',MODEL_FIELD_WHEN,bModelWhen)
     oStructZ51:setProperty('Z51_VALOR',MODEL_FIELD_WHEN,bModelWhen)
     oStructZ51:setProperty('Z51_QTDMED',MODEL_FIELD_WHEN,bModelWhen)
+    oStructZ51:setProperty('Z51_EMISSA' ,MODEL_FIELD_WHEN,bWhenEmiss)
 
     oModel := mpFormModel():new('MODEL_CGTM002',bModelPre,bModelPos,bCommit,bCancel)
     oModel:setDescription('Contratos')
@@ -139,6 +141,23 @@ Static Function modeldef
     oModel:setRelation('Z52DETAIL',{{'Z52_FILIAL','xFilial("Z52")'},{"Z52_NUMERO","Z51_NUMERO"}},Z52->(indexKey(1)))
 
 Return oModel
+
+Static Function vWhenEmis(oModel)
+
+    Local lWhen := .T.
+
+    IF oModel:getOperation() == 4
+
+        dDtAssinBd := Z51->Z51_DTASSI
+        dDtAssinMd := oModel:getModel('Z51MASTER'):getValue('Z51_DTASSI')
+
+        IF .not. empty(dDtAssinBd)
+            lWhen := .F.
+        EndIF    
+
+    EndIF
+ 
+return lWhen
 
 Static Function fCancel(oModel)
 
@@ -153,6 +172,7 @@ Static Function fCancel(oModel)
     EndIF
 
 Return lCancel
+
 Static Function vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,nOpc)
 
     Local lValid
