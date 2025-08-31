@@ -132,6 +132,7 @@ Static Function modeldef
     oStructZ51:setProperty('Z51_QTDMED',MODEL_FIELD_WHEN,bModelWhen)
     oStructZ51:setProperty('Z51_EMISSA' ,MODEL_FIELD_WHEN,bWhenEmiss)
     oStructZ51:setProperty('*'          ,MODEL_FIELD_VALID,bValid   )
+    oStructZ52:setProperty('*'          ,MODEL_FIELD_VALID,bValid   )
 
     aTrigger1 := fwStruTrigger("Z52_CODPRD","Z52_DESPRD","U_GCTT002(1)",.F.,Nil,Nil,Nil,Nil,"001")
     aTrigger2 := fwStruTrigger("Z52_CODPRD","Z52_LOCEST","U_GCTT002(2)",.F.,Nil,Nil,Nil,Nil,"002")
@@ -213,9 +214,9 @@ Static Function vValid
 
             nQtd    := oModel:getModel('Z52DETAIL'):getValue('Z52_QTD'   )
             nVlrUni := oModel:getModel('Z52DETAIL'):getValue('Z52_VLRUNI')  
-            nValor  := round(nQtd * nVlrUni,tamSX3('Z52_VALOR')[2]       ) 
+            nValor  := round(nQtd * nVlrUni,tamSX3('Z52_VALOR')[2]       ) //tamSX3 na posicao 2 tem a qtd de decimais 
 
-            fwFldPut('Z52_VALOR',nValor)
+            fwFldPut('Z52_VALOR',nValor) // alternativa ao oModel:getModel('Z52DETAIL'):setValue('Z52_VALOR',nValor)
             fwFldPut('Z52_SALDO',nValor)
 
     END CASE
