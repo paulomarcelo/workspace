@@ -1,7 +1,7 @@
 #include 'totvs.ch'
 #include 'tbiconn.ch'
 
-/*/{Protheus.doc} U_GCTA002
+/*/{Protheus.doc} U_GCTA003
     Exemplo de programa prototipo modelo 2 - advpl tradicional
     Cadastro de contratos
     @type  Function
@@ -16,9 +16,9 @@
 	@see https://tdn.totvs.com/display/framework/BEGIN+TRANSACTION
     @see https://tdn.totvs.com/display/tec/TFont   
     @see https://tdn.totvs.com/display/tec/TSay     
-    @see https://tdn.totvs.com/display/tec/TGet	
+    @see https://tdn.totvs.com/display/tec/TGet	s
     /*/
-Function U_CGTA003
+Function U_GCTA003
 
 	Private cTitulo 	:= 'Registro de medições de contratos - modelo 2 - ADVPL Tradicional'
 	Private aRotina[0]	
