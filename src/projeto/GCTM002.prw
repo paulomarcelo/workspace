@@ -133,6 +133,11 @@ Static Function modeldef
     oStructZ51:setProperty('Z51_EMISSA' ,MODEL_FIELD_WHEN,bWhenEmiss)
     oStructZ51:setProperty('*'          ,MODEL_FIELD_VALID,bValid   )
 
+    aTrigger1 := fwStruTrigger("Z52_CODPRD","Z52_DESPRD","U_GCTT002(1)",.F.,Nil,Nil,Nil,Nil,"001")
+    aTrigger2 := fwStruTrigger("Z52_CODPRD","Z52_LOCEST","U_GCTT002(2)",.F.,Nil,Nil,Nil,Nil,"002")
+    oStructZ52:addTrigger(aTrigger1[1],aTrigger1[2],aTrigger1[3],aTrigger1[4])
+    oStructZ52:addTrigger(aTrigger2[1],aTrigger2[2],aTrigger2[3],aTrigger2[4])
+
     oModel := mpFormModel():new('MODEL_CGTM002',bModelPre,bModelPos,bCommit,bCancel)
     oModel:setDescription('Contratos')
     oModel:addFields('Z51MASTER',,oStructZ51)
@@ -143,6 +148,26 @@ Static Function modeldef
     oModel:setRelation('Z52DETAIL',{{'Z52_FILIAL','xFilial("Z52")'},{"Z52_NUMERO","Z51_NUMERO"}},Z52->(indexKey(1)))
 
 Return oModel
+
+Function U_GCTT002(nOpc)
+
+    Local oModel
+    Local cCodPrd
+
+    DO CASE
+
+        CASE nOpc == 1 //-- Gatilho de descricao
+            oModel := fwModelActive() // retorna o modelo de dados ativo
+            cCodPrd := oModel:getModel('Z52DETAIL'):getValue('Z52_CODPRD')
+            SB1->(dbSetOrder(1),dbSeek(xFilial(alias())+cCodPrd))
+            return LEFT(SB1->B1_DESC,TAMSX3('Z52_DESPRD')[1])
+
+        CASE nOpc == 2 //-- Gatilho de local de estoque 
+            return SB1->B1_LOCPAD        
+
+    END CASE    
+
+Return 
 
 Static Function vValid
 
