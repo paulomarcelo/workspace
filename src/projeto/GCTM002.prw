@@ -72,6 +72,13 @@ Static Function viewdef
     oModel := fwLoadModel('GCTM002')
     oView := fwFormView():new()   
 
+    // bloqueando campos para edicao na interface
+    oStructZ52:setProperty('Z52_VALOR',MVC_VIEW_CANCHANGE,.F.)
+    oStructZ52:setProperty('Z52_SALDO',MVC_VIEW_CANCHANGE,.F.)
+    oStructZ52:setProperty('Z52_QTDATU',MVC_VIEW_CANCHANGE,.F.)
+    oStructZ52:setProperty('Z52_VLRMED',MVC_VIEW_CANCHANGE,.F.)
+    oStructZ52:setProperty('Z52_QTDMED',MVC_VIEW_CANCHANGE,.F.)
+
     oView:setModel(oModel)
     oView:addField('Z51MASTER',oStructZ51,'Z51MASTER')
     oView:addGrid('Z52DETAIL',oStructZ52,'Z52DETAIL')
