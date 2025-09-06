@@ -114,14 +114,14 @@ Function U_GCTA003M(cAlias,nReg,nOpc)
 
     oGetEmis        := tGet():new(60,100, {|u| if(pCount() > 0, dEmisZ53 := u, dEmisZ53)},oDlg, 70,10,'',bValid,CLR_BLACK,CLR_WHITE,oFont,;
                                     Nil,Nil,.T.,Nil,Nil,bWhen ,.T.,.F.,bChange,.F.,.F.,Nil,'dEmisZ53',Nil,Nil,Nil,.T.)
-    oGetEmis:bWhen  := {|| if(nOpc == 3, .T., .F.)}                               
+    oGetEmis:bWhen  := {|| if(nOpc == 3, .T., .F.)} // so pode ser editado na inclusao                              
 
     oGetZ51         := tGet():new(60,190, {|u| if(pCount() > 0, cNumZ51 := u, cNumZ51)},oDlg, 70,10,'',bValid,CLR_BLACK,CLR_WHITE,oFont,;
                                     Nil,Nil,.T.,Nil,Nil,bWhen ,.T.,.F.,bChange,.F.,.F.,Nil,'cNumZ51',Nil,Nil,Nil,.T.) 
     oGetZ51:cF3     := 'Z51'
     oGetZ51:bValid  := {|| vazio() .Or. existCpo("Z51")}   
     oGetZ51:bChange := {|| cNumZ50 := posicione("Z51",1,xFilial("Z51")+cNumZ51,'Z51_TIPO')}      
-    oGetZ51:bWhen   := {|| if(nOpc == 3, .T., .F.)}                        
+    oGetZ51:bWhen   := {|| if(nOpc == 3, .T., .F.)} // so pode ser editado na inclusao                       
 
     oGetZ50         := tGet():new(60,280, {|u| if(pCount() > 0, cNumZ50 := u, cNumZ50)},oDlg, 70,10,'',bValid,CLR_BLACK,CLR_WHITE,oFont,;
                                     Nil,Nil,.T.,Nil,Nil,bWhen ,.T.,.F.,bChange,.F.,.F.,Nil,'cNumZ50',Nil,Nil,Nil,.T.) 
