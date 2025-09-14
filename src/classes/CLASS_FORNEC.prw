@@ -64,13 +64,20 @@ method grava_fornecedor() class fornecedor
         cLoja   := soma1(cLoja)
     EndIF 
 
+    cNome       := left(self:nome           ,tamSX3('A2_NOME'   )[1])
+    cNomeRed    := left(self:nome_reduzido  ,tamSX3('A2_NREDUZ' )[1])
+    cEndereco   := left(self:endereco       ,tamSX3('A2_END'    )[1])
+    cBairro     := left(self:bairro         ,tamSX3('A2_BAIRRO' )[1])
+    cCidade     := left(self:cidade         ,tamSX3('A2_MUN'    )[1])
+    cComplem    := left(self:complemento    ,tamSX3('A2_COMPLEM')[1])
+
     aadd(aSA2,{"A2_COD"     ,cCodigo             ,})
     aadd(aSA2,{"A2_LOJA"    ,cLoja               ,}) 
-    aadd(aSA2,{"A2_NOME"    ,self:nome           ,})
-    aadd(aSA2,{"A2_NREDUZ"  ,self:nome_reduzido  ,}) 
+    aadd(aSA2,{"A2_NOME"    ,cNome               ,})
+    aadd(aSA2,{"A2_NREDUZ"  ,cNomeRed            ,}) 
     aadd(aSA2,{"A2_CGC"     ,self:cpf_cnpj       ,})
     aadd(aSA2,{"A2_TIPO"    ,"J"                 ,})
-    aadd(aSA2,{"A2_END"     ,self:endereco       ,}) 
+    aadd(aSA2,{"A2_END"     ,cEndereco           ,}) 
     aadd(aSA2,{"A2_BAIRRO"  ,self:bairro         ,}) 
     aadd(aSA2,{"A2_EST"     ,self:uf             ,})
     aadd(aSA2,{"A2_MUN"     ,self:cidade         ,})  
