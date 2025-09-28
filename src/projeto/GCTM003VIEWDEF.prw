@@ -17,6 +17,12 @@ Static Function viewdef
 	oModel := fwLoadModel('GCTM003MODELDEF')
 	oView := fwFormView():new()
 
+    // Definindo a ordem dos campos
+    oStrZ53CAB:setProperty('Z53_NUMERO' ,MVC_VIEW_ORDEM,'01')
+    oStrZ53CAB:setProperty('Z53_TIPO'   ,MVC_VIEW_ORDEM,'02')
+    oStrZ53CAB:setProperty('Z53_NUMMED' ,MVC_VIEW_ORDEM,'03')
+    oStrZ53CAB:setProperty('Z53_EMISSA' ,MVC_VIEW_ORDEM,'04')
+
 	// bloqueando campos para edicao na interface
     oStrZ53CAB:setProperty('Z53_TIPO' ,MVC_VIEW_CANCHANGE,.F.)
 	oStrZ53CAB:setProperty('Z53_NUMMED',MVC_VIEW_CANCHANGE,.F.)
