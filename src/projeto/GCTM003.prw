@@ -26,7 +26,7 @@
 /*/
 Function U_GCTB003
 
-	Private aRotina     := menudef()
+	Private aRotina     := fwLoadMenuDef('GCTM003MENUDEF')
 	Private oBrowse     := fwMBrowse():new()
 
 	oBrowse:setAlias('Z53')
@@ -35,7 +35,7 @@ Function U_GCTB003
 	oBrowse:addLegend("LEFT(Z53_TIPO,1) == 'V' "  ,"BR_AMARELO"   ,"Vendas"          ,'1')
 	oBrowse:addLegend("LEFT(Z53_TIPO,1) == 'C' "  ,"BR_LARANJA"   ,"Compras"         ,'1')
 	oBrowse:addLegend("LEFT(Z53_TIPO,1) == 'S' "  ,"BR_CINZA"     ,"Sem Integracao"  ,'1')
-	oBrowse:addLegend("Z53_STATUS == 'A' "        ,"VERDE"        ,"Aberta"          ,'2')
+	oBrowse:addLegend("Z53_STATUS $ 'A ' "        ,"VERDE"        ,"Aberta"          ,'2')
 	oBrowse:addLegend("Z53_STATUS == 'E' "        ,"VERMELHO"     ,"Encerrado"       ,'2')
 	oBrowse:activate()
 
