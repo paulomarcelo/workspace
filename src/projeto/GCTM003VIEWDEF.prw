@@ -19,7 +19,7 @@ Static Function viewdef
 
 	// bloqueando campos para edicao na interface
     oStrZ53CAB:setProperty('Z53_TIPO' ,MVC_VIEW_CANCHANGE,.F.)
-	oStrZ53DET:setProperty('Z53_NUMMED',MVC_VIEW_CANCHANGE,.F.)
+	oStrZ53CAB:setProperty('Z53_NUMMED',MVC_VIEW_CANCHANGE,.F.)
     oStrZ53DET:setProperty('Z53_VALOR',MVC_VIEW_CANCHANGE,.F.)
 	oStrZ53DET:setProperty('Z53_STATUS',MVC_VIEW_CANCHANGE,.F.)
 	oStrZ53DET:setProperty('Z53_PEDIDO',MVC_VIEW_CANCHANGE,.F.)
