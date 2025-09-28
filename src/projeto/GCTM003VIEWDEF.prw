@@ -29,8 +29,8 @@ Static Function viewdef
 	oView:addField('Z53MASTER',oStrZ53CAB,'Z53MASTER')
 	oView:addGrid('Z53DETAIL',oStrZ53DET,'Z53DETAIL')
 	oView:addIncrementView('Z53DETAIL','Z53_ITEM')
-	oView:createHorizontalBox('BOXZ53CAB',30)
-	oView:createHorizontalBox('BOXZ53DET',70)
+	oView:createHorizontalBox('BOXZ53CAB',20)
+	oView:createHorizontalBox('BOXZ53DET',80)
 	oView:setOwnerView('Z53MASTER','BOXZ53CAB')
 	oView:setOwnerView('Z53DETAIL','BOXZ53DET')
 
