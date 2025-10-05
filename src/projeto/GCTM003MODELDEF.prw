@@ -23,6 +23,8 @@ Static Function modeldef
 	oStrZ53CAB := fwFormStruct(1,'Z53', {|cCampo|       alltrim(cCampo) $ 'Z53_NUMERO|Z53_NUMMED|Z53_EMISSA|Z53_TIPO'})
 	oStrZ53DET := fwFormStruct(1,'Z53', {|cCampo| .not. alltrim(cCampo) $ 'Z53_NUMERO|Z53_NUMMED|Z53_EMISSA|Z53_TIPO'})
 
+	oStrZ53CAB:setProperty('Z53_NUMERO',MODEL_FIELD_VALID,{|| fnValid()})
+	
 	oModel := mpFormModel():new('MODEL_CGTM003',bModelPre,bModelPos,bCommit,bCancel)
 	oModel:setDescription('Apontamento de Medições')
 	oModel:addFields('Z53MASTER',,oStrZ53CAB)
@@ -62,3 +64,22 @@ Static Function vGridLoad(oGridModel,lCopy)
     Local aLoad := formLoadGrid(oGridModel, lCopy)
     
 Return aLoad
+
+Static Function fnValid
+
+	Local lValid := .T.
+	Local cCampo := StrTran(readvar(),"M->","")		
+	Local oModel := fwModelActive()
+
+	DO CASE
+		CASE cCampo == 'Z53_NUMERO'
+			Z51->(DBSetOrder(1),DBSeek(xFilial(alias())+M->Z53_NUMERO))
+			lValid := Z51->(Found())
+
+			If lValid
+				oModel:getModel('Z53MASTER'):setValue('Z53_TIPO',Z51->Z51_TIPO)
+				return lValid
+			EndIf
+	ENDCASE
+
+return lValid
