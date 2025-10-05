@@ -73,6 +73,34 @@ Static Function vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,nO
 
     Local lValid := .T.
 
+	IF nOpcao == 2
+		IF cAction == 'SETVALUE'
+			IF cField == 'Z53_CODPRD'
+
+				cAliasSQL := getNextAlias()
+				
+				BeginSQL alias cAliasSQL
+					SELECT * FROM %table:Z52% 
+					WHERE Z52.%notdel%
+					AND Z52_FILIAL = %exp:xFilial('Z52')%
+					AND Z52_NUMERO = %exp:fwFldGet('Z53_NUMERO')%
+					AND Z52_CODPRD = %exp:xValue%
+				EndSQL
+
+				nRecZ52 := 0
+
+				(cAliasSQL)->(dbEval({|| nRecZ52 := R_E_C_N_O_}),dbCloseArea())
+
+				IF nRecZ52 == 0
+					return .F.
+				EndIF
+
+				Z52->(DBSetOrder(1),dbGoTo(nRecZ52))
+				
+			EndIF
+		EndIF
+	EndIF
+
 Return lValid
 
 Static Function vGridPos(oGridModel,nLine,nOpcao)
