@@ -100,11 +100,31 @@ Static Function vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,nO
 				Z52->(DBSetOrder(1),dbGoTo(nRecZ52))
 				fwFldPut('Z53_DESPRD',Z52->Z52_DESPRD)
 				fwFldPut('Z53_LOCEST',Z52->Z52_LOCEST)
+				fwFldPut('Z53_VALOR',fwFldGet('Z53_QTD') * Z52->Z52_VLRUNI)
+
+			ElseIF cField == 'Z53_QTD'
+
+				cAliasSQL := getNextAlias()
+				
+				BeginSQL alias cAliasSQL
+					SELECT * FROM %table:Z52% Z52
+					WHERE Z52.%notdel%
+					AND Z52_FILIAL = %exp:xFilial('Z52')%
+					AND Z52_NUMERO = %exp:fwFldGet('Z53_NUMERO')%
+					AND Z52_CODPRD = %exp:fwFldGet('Z53_CODPRD')%
+				EndSQL
+
+				nRecZ52 := 0
+
+				(cAliasSQL)->(dbEval({|| nRecZ52 := R_E_C_N_O_}),dbCloseArea())
+
+				Z52->(DBSetOrder(1),dbGoTo(nRecZ52))
+				fwFldPut('Z53_VALOR',xValue * Z52->Z52_VLRUNI)
 
 			EndIF
 
 		EndIF
-		
+
 	EndIF
 
 Return lValid
