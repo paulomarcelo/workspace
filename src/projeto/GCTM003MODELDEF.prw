@@ -98,9 +98,13 @@ Static Function vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,nO
 				EndIF
 
 				Z52->(DBSetOrder(1),dbGoTo(nRecZ52))
+				fwFldPut('Z53_DESPRD',Z52->Z52_DESPRD)
+				fwFldPut('Z53_LOCEST',Z52->Z52_LOCEST)
 
 			EndIF
+
 		EndIF
+		
 	EndIF
 
 Return lValid
