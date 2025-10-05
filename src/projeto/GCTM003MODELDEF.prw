@@ -24,6 +24,8 @@ Static Function modeldef
 	oStrZ53DET := fwFormStruct(1,'Z53', {|cCampo| .not. alltrim(cCampo) $ 'Z53_NUMERO|Z53_NUMMED|Z53_EMISSA|Z53_TIPO'})
 
 	oStrZ53CAB:setProperty('Z53_NUMERO',MODEL_FIELD_VALID,{|| fnValid()})
+	oStrZ53CAB:setProperty('Z53_NUMMED',MODEL_FIELD_INIT,{|| getSxeNum("Z53","Z53_NUMMED")})
+	oStrZ53CAB:setProperty('Z53_EMISSA',MODEL_FIELD_INIT,{|| ddatabase})
 	
 	oModel := mpFormModel():new('MODEL_CGTM003',bModelPre,bModelPos,bCommit,bCancel)
 	oModel:setDescription('Apontamento de Medições')
@@ -44,6 +46,12 @@ Return lCommit
 Static Function fCancel(oModel)
 
     Local lCancel := fwFormCancel(oModel)
+
+	IF lCancel
+		IF	__lSX8
+			rollbacksx8()
+		EndIf
+	EndIf
 
 Return lCancel
 
