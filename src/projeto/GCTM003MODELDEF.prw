@@ -72,6 +72,7 @@ Return lCancel
 Static Function vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,nOpcao)
 
     Local lValid := .T.
+	Local oModel := fwModelActive()
 
 	IF nOpcao == 2
 		IF cAction == 'SETVALUE'
@@ -80,7 +81,7 @@ Static Function vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,nO
 				cAliasSQL := getNextAlias()
 				
 				BeginSQL alias cAliasSQL
-					SELECT * FROM %table:Z52% 
+					SELECT * FROM %table:Z52% Z52
 					WHERE Z52.%notdel%
 					AND Z52_FILIAL = %exp:xFilial('Z52')%
 					AND Z52_NUMERO = %exp:fwFldGet('Z53_NUMERO')%
@@ -92,11 +93,12 @@ Static Function vGridPre(oGridModel,nLine,cAction,cField,xValue,xCurrentValue,nO
 				(cAliasSQL)->(dbEval({|| nRecZ52 := R_E_C_N_O_}),dbCloseArea())
 
 				IF nRecZ52 == 0
+					oModel:setErrorMessage(,,,,'ERRO PRODUTO','PRODUTO DIGITADO NAO ENCONTRADO NO CONTRATO')
 					return .F.
 				EndIF
 
 				Z52->(DBSetOrder(1),dbGoTo(nRecZ52))
-				
+
 			EndIF
 		EndIF
 	EndIF
