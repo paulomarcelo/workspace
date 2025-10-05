@@ -26,6 +26,7 @@ Static Function modeldef
 	oStrZ53CAB:setProperty('Z53_NUMERO',MODEL_FIELD_VALID,{|| fnValid()})
 	oStrZ53CAB:setProperty('Z53_NUMMED',MODEL_FIELD_INIT,{|| getSxeNum("Z53","Z53_NUMMED")})
 	oStrZ53CAB:setProperty('Z53_EMISSA',MODEL_FIELD_INIT,{|| ddatabase})
+	oStrZ53CAB:setProperty('Z53_EMISSA',MODEL_FIELD_WHEN,{|| fnWhen(1)})
 	
 	oModel := mpFormModel():new('MODEL_CGTM003',bModelPre,bModelPos,bCommit,bCancel)
 	oModel:setDescription('Apontamento de Medições')
@@ -36,6 +37,19 @@ Static Function modeldef
 	oModel:setRelation('Z53DETAIL',{{'Z53_FILIAL','xFilial("Z53")'},{"Z53_NUMERO","Z53_NUMERO"}},Z53->(indexKey(1)))
 
 Return oModel
+
+Static Function fnWhen(nOpcao)
+
+	Local oModel := fwModelActive()
+	Local lWhen := .T.
+	Local lInclui := oModel:getOperation() == 3 .or. oModel:getOperation() == 9 // Inclusao ou Cópia
+	
+	DO CASE
+		CASE nOpcao == 1 // When no campo Z53_EMISSA
+			return lInclui
+	ENDCASE
+
+return lWhen
 
 Static Function fCommit(oModel)
 
