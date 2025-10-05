@@ -53,7 +53,7 @@ return lWhen
 
 Static Function fCommit(oModel)
 
-    Local lCommit := fwFormCommit(oModel)
+    Local lCommit := fwFormCommit(oModel,,,,{|| U_ATUALIZA_INDICADORES_DO_CONTRATO()})
 
 Return lCommit
 
