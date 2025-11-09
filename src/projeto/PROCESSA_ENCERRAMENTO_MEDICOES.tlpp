@@ -10,4 +10,10 @@
     /*/
 Function U_PROCESSA_ENCERRAMENTO_MEDICOES
 
+    Local lExec := FWAlertYesNo('Confirma a execucao da rotina?','Processa Encerramento de Medicoes')
+
+    IF .not. lExec
+        Return
+    ENDIF
+
 Return
