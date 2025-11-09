@@ -1,0 +1,13 @@
+#include 'totvs.ch'
+
+/*/{Protheus.doc} U_PROCESSA_ENCERRAMENTO_MEDICOES
+    Programa para encerramento das medicoes
+    @type  Function
+
+    @see https://tdninterno.totvs.com/display/tec/Try...Catch
+    @see (Pedido de Vendas) https://centraldeatendimento.totvs.com/hc/pt-br/articles/7326654842775-Cross-Segmento-TOTVS-Backoffice-Linha-Protheus-SIGAFAT-EXECAUTO-MATA410
+    @see (Pedido de Compras) https://tdn.totvs.com/pages/releaseview.action?pageId=6089279
+    /*/
+Function U_PROCESSA_ENCERRAMENTO_MEDICOES
+
+Return
