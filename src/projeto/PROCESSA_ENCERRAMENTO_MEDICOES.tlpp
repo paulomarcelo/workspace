@@ -12,8 +12,16 @@ Function U_PROCESSA_ENCERRAMENTO_MEDICOES
 
     Local lExec := FWAlertYesNo('Confirma a execucao da rotina?','Processa Encerramento de Medicoes')
 
+    Private lAbortPrint := .F.
+
     IF .not. lExec
         Return
     ENDIF
+
+    processa({|| PROCESSA_ENCERRAMENTO_MEDICOES()},"Encerrando Medicoes","Aguarde...")
+
+Return
+
+Static Function PROCESSA_ENCERRAMENTO_MEDICOES
 
 Return
