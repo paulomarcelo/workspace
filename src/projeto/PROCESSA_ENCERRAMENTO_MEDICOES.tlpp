@@ -24,4 +24,43 @@ Return
 
 Static Function PROCESSA_ENCERRAMENTO_MEDICOES
 
+    Local nTamanho := 0
+
+    (cAliasTmp)->(dbEval({|| IF(empty(MARK),nil,nTamanho++)}))
+
+    procregua(nTamanho)
+
+    (cAliasTmp)->(dbEval({|| IF(empty(MARK),nil,if(lAbortPrint,nil,ENCERRA_MEDICAO()))}))
+
+Return
+
+Static Function ENCERRA_MEDICAO
+
+    incproc("PROCESSANDO MEDICAO+ITEM: " + (cAliasTmp)->(Z53_NUMMED + '-' + Z53_ITEM))
+
+    DO CASE
+
+        CASE LEFT(Z53_TIPO,1) == "S" //-- Encerramento da medicao sem integracao
+            ENCERRA_SEM_INTEGRACAO()
+
+        CASE LEFT(Z53_TIPO,1) == "C" //-- Encerramento da medicao com inclusao de pedido de compras
+            ENCERRA_COM_PEDIDO_DE_COMPRAS()     
+
+        CASE LEFT(Z53_TIPO,1) == "V" //-- Encerramento da medicao com inclusao de pedido de vendas
+            ENCERRA_COM_PEDIDO_DE_VENDAS()
+        
+    END CASE
+
+Return
+
+Static Function ENCERRA_SEM_INTEGRACAO 
+
+Return
+
+Static Function ENCERRA_COM_PEDIDO_DE_COMPRAS 
+
+Return
+
+Static Function ENCERRA_COM_PEDIDO_DE_VENDAS
+
 Return
