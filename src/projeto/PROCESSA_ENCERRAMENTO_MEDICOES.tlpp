@@ -20,6 +20,8 @@ Function U_PROCESSA_ENCERRAMENTO_MEDICOES
 
     processa({|| PROCESSA_ENCERRAMENTO_MEDICOES()},"Encerrando Medicoes","Aguarde...")
 
+    FWAlertInfo('Processo concluido','Encerramento de Medicoes')
+
 Return
 
 Static Function PROCESSA_ENCERRAMENTO_MEDICOES
@@ -30,7 +32,7 @@ Static Function PROCESSA_ENCERRAMENTO_MEDICOES
 
     procregua(nTamanho)
 
-    (cAliasTmp)->(dbEval({|| IF(empty(MARK),nil,if(lAbortPrint,nil,ENCERRA_MEDICAO()))}))
+    (cAliasTmp)->(dbEval({|| IF(empty(MARK) .and. Z53_STATUS <> 'E',nil,if(lAbortPrint,nil,ENCERRA_MEDICAO()))}))
 
 Return
 
@@ -54,6 +56,20 @@ Static Function ENCERRA_MEDICAO
 Return
 
 Static Function ENCERRA_SEM_INTEGRACAO 
+
+    IF  Z53->(DBSetOrder(1),DBSeek(xFilial(alias())+(cAliasTmp)->(Z53_NUMERO+Z53_NUMMED+Z53_ITEM)))
+
+        Z53->(recLock(alias(),.F.))
+            Z53->Z53_STATUS := 'E' // Encerrado
+            Z53->Z53_PEDIDO := 'XXXXXX' // Sem pedido
+        Z53->(msunlock())
+
+    EndIF
+
+    (cAliasTmp)->(recLock(alias(),.F.))
+        (cAliasTmp)->Z53_STATUS := 'E' // Encerrado
+        (cAliasTmp)->Z53_PEDIDO := 'XXXXXX' // Sem pedido
+    (cAliasTmp)->(msunlock())
 
 Return
 
