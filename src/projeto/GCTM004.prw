@@ -47,7 +47,7 @@ Function U_GCTB004
     while .not. (cAliasSQL)->(eof())
 
         (cAliasTmp)->(dbAppend())
-        (cAliasTmp)->MARK           := cMarca  
+        // (cAliasTmp)->MARK           := cMarca   // não funciona com a classe fwMarkBrowse
         (cAliasTmp)->Z53_NUMERO     := (cAliasSQL)->Z53_NUMERO
         (cAliasTmp)->Z53_TIPO       := (cAliasSQL)->Z53_TIPO
         (cAliasTmp)->Z53_NUMMED     := (cAliasSQL)->Z53_NUMMED
