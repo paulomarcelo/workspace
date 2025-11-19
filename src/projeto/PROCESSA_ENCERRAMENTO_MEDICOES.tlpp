@@ -32,7 +32,21 @@ Static Function PROCESSA_ENCERRAMENTO_MEDICOES
 
     procregua(nTamanho)
 
-    (cAliasTmp)->(dbEval({|| IF(empty(MARK) .and. Z53_STATUS <> 'E',nil,if(lAbortPrint,nil,ENCERRA_MEDICAO()))}))
+    (cAliasTmp)->(dbGoTop())
+
+    While .not. (cAliasTmp)->(eof())
+
+        IF lAbortPrint
+            Exit
+        EndIF
+
+        IF .not. empty((cAliasTmp)->MARK)
+            (cAliasTmp)->(ENCERRA_MEDICAO())
+        EndIF    
+
+        (cAliasTmp)->(dbSkip())
+
+    Enddo
 
 Return
 
@@ -73,7 +87,72 @@ Static Function ENCERRA_SEM_INTEGRACAO
 
 Return
 
-Static Function ENCERRA_COM_PEDIDO_DE_COMPRAS 
+Static Function ENCERRA_COM_PEDIDO_DE_COMPRAS
+
+    Local aCab := {}
+    Local aItem := {}
+    Local aItens := {}
+    Local cNumPed := ''
+
+    Private lMsErroAuto := .F.
+
+    Z53->(DBSetOrder(1),DBSeek(xFilial(alias())+(cAliasTmp)->(Z53_NUMERO+Z53_NUMMED+Z53_ITEM)))
+    Z51->(dbSetOrder(1),dbSeek(xFilial(alias())+Z53->Z53_NUMERO))
+    Z52->(dbSetOrder(1),dbSeek(xFilial(alias())+Z53->Z53_NUMERO))
+
+    while .not. Z52->(eof()) .and. Z52->(Z52_FILIAL+Z52_NUMERO) == Z53->(Z53_FILIAL+Z53_NUMERO)
+
+        IF Z52->Z52_CODPRD == Z53->Z53_CODPRD
+            Exit
+        EndIF
+
+        Z52->(dbSkip())
+
+    Enddo 
+
+    cNumPed := getSxeNum('SC7','C7_NUM')
+
+    While SC7->(dbSetOrder(1),dbSeek(xFilial(alias())+cNumPed))
+        confirmSX8()
+        cNumPed := getSxeNum('SC7','C7_NUM')
+    End    
+
+    aadd(aCab,{'C7_NUM'     ,cNumPed        ,})
+    aadd(aCab,{'C7_EMISSAO' ,ddatabase      ,})
+    aadd(aCab,{'C7_FORNECE' ,Z51->Z51_CLIENT,})
+    aadd(aCab,{'C7_LOJA'    ,Z51->Z51_LOJA  ,})
+    aadd(aCab,{'C7_COND'    ,'001'          ,})
+    aadd(aCab,{'C7_CONTATO' ,'AUTO'         ,})
+    aadd(aCab,{'C7_FILENT'  ,cFilAnt        ,})
+
+    aadd(aItem,{'C7_PRODUTO',Z53->Z53_CODPRD,})
+    aadd(aItem,{'C7_QUANT'  ,Z53->Z53_QTD   ,})
+    aadd(aItem,{'C7_PRECO'  ,Z52->Z52_VLRUNI,})
+    aadd(aItem,{'C7_TOTAL'  ,Z53->Z53_VALOR ,})
+    aadd(aItem,{'C7_ZNUMMED',Z53->Z53_NUMMED,})
+    aadd(aItem,{'C7_ZITEMME',Z53->Z53_ITEM  ,})
+
+    aadd(aItens,aItem)
+
+    msExecAuto({|x,y| mata120(1,x,y,3)},aCab,aItens)
+
+    IF lMsErroAuto
+        rollbackSX8()
+        mostraErro()
+        return .F.
+    EndIF
+
+    confirmSX8()
+
+    Z53->(recLock(alias(),.F.))
+        Z53->Z53_STATUS := 'E' // Encerrado
+        Z53->Z53_PEDIDO := cNumPed // Numero do pedido de compras
+    Z53->(msunlock())
+
+    (cAliasTmp)->(recLock(alias(),.F.))
+        (cAliasTmp)->Z53_STATUS := 'E' // Encerrado
+        (cAliasTmp)->Z53_PEDIDO := cNumPed // Numero do pedido de compras
+    (cAliasTmp)->(msunlock())
 
 Return
 
